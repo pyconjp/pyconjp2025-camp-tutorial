@@ -46,6 +46,7 @@ $ source venv/bin/python
     1. 他の言語などで VS Code を開発に使用している場合は新規プロファイルを推奨
 1. メニューから「フォルダを開く (Open Folder)」を選択し、クローンしたリポジトリを選択
 1. 右下に以下メッセージのような「おすすめ拡張機能をインストールするか」のポップアップ ダイアログが出るので「インストール」を押下
+    1. または左端のアクティビティ バーにある拡張機能のアイコンをクリックし、検索窓に `@recommended` と入力して表示される拡張機能をインストールする
     1. メッセージ(日): このリポジトリ 用のおすすめ拡張機能 Microsoft、tamasfe、その他からの拡張機能 をインストールしますか?
     1. メッセージ(英): Do you want to install the recommended extensions from Microsoft, tamasfe and others for this repository?
 1. 任意: 右下に以下メッセージのような「Python インタープリタを選択」とポップアップ ダイアログが出る場合は Python インタープリタを指定する
