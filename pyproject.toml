@@ -17,3 +17,12 @@ dev = [
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
 ]
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.mypy]
+ignore_missing_imports = true
