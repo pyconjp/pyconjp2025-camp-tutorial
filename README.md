@@ -26,7 +26,7 @@ $ uv add --dev ruff pyright pytest pytest-asyncio httpx
 uv を使用する場合
 
 ```bash
-$ uv sync --dev
+$ uv sync --extra 'dev'
 ```
 
 venv を利用する場合
@@ -34,7 +34,7 @@ venv を利用する場合
 ```bash
 $ python -m venv venv
 $ source venv/bin/python
-(venv) $ pip install -r requirements-dev.txt
+(venv) $ pip install -e ".[dev]"
 ```
 
 ## 実行方法
