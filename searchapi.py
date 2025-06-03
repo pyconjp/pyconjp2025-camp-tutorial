@@ -1,29 +1,35 @@
 """
-DeepSeek APIに対して問い合わせを行うモジュール
+Gemini APIに対して問い合わせを行うモジュール
 
 このモジュールには3つの機能を持つ:
-- 一つの問い合わせだけを行う `query_deepseek` 関数
-- 複数の問い合わせを実行する `grid_query_deepseek` 関数
-- 複数の問い合わせを非同期に実行する `agrid_query_deepseek` 関数
+- 一つの問い合わせだけを行う `query_gemini` 関数
+- 複数の問い合わせを実行する `grid_query_gemini` 関数
+- 複数の問い合わせを非同期に実行する `agrid_query_gemini` 関数
 """
 
 import asyncio
 import logging
 import os
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_deepseek import ChatDeepSeek
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-if os.getenv("DEEPSEEK_API_KEY") is None:
+AVAILABLE_MODELS = Literal[
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-2.5-flash",
+]
+
+if os.getenv("GOOGLE_API_KEY") is None:
     HAS_API_KEY = False
     logger.warning(
-        "DEEPSEEK_API_KEY 環境変数が設定されていません。"
-        "DeepSeek APIを使用するには、環境変数 DEEPSEEK_API_KEY を設定してください。"
+        "GOOGLE_API_KEY 環境変数が設定されていません。"
+        "Gemini APIを使用するには、環境変数 GOOGLE_API_KEY を設定してください。"
     )
 else:
     HAS_API_KEY = True
@@ -34,19 +40,19 @@ class QueryArgs(TypedDict):
 
     query: str
     role: str
-    model_name: str
+    model_name: AVAILABLE_MODELS
     temperature: float
     max_tokens: int | None
 
 
-def query_deepseek(
+def query_gemini(
     q: str,
     role: str,
-    model_name: str,
+    model_name: AVAILABLE_MODELS,
     temperature: float,
     max_tokens: int | None = None,
 ) -> tuple[str, QueryArgs]:
-    """DeepSeek APIに単一の問い合わせを行う関数
+    """Gemini APIに単一の問い合わせを行う関数
 
     Args:
         q: クエリ文字列
@@ -61,8 +67,8 @@ def query_deepseek(
           - 引数の値をオブジェクトで返す
     """
     if not HAS_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY 環境変数が設定されていません。")
-    chat = ChatDeepSeek(
+        raise ValueError("GOOGLE_API_KEY 環境変数が設定されていません。")
+    chat = ChatGoogleGenerativeAI(
         model=model_name, temperature=temperature, max_tokens=max_tokens
     )
 
@@ -83,14 +89,14 @@ def query_deepseek(
     return content_str, args_dict
 
 
-def grid_query_deepseek(
+def grid_query_gemini(
     q: str,
     roles: tuple[str, ...],
-    model_names: tuple[str, ...],
+    model_names: tuple[AVAILABLE_MODELS, ...],
     temperature: float,
     max_tokens: int | None = None,
 ) -> list[tuple[str, QueryArgs]]:
-    """DeepSeek APIに複数の問い合わせを行う関数
+    """Gemini APIに複数の問い合わせを行う関数
 
     役割とモデル複数のパターンをすべて問い合わせる
 
@@ -103,15 +109,15 @@ def grid_query_deepseek(
 
     Returns:
         List[Tuple[str, Dict[str, Union[str, int, float, None]]]]:
-          query_deepseek関数の戻り値のリスト
+          query_gemini関数の戻り値のリスト
     """
     if not HAS_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY 環境変数が設定されていません。")
+        raise ValueError("GOOGLE_API_KEY 環境変数が設定されていません。")
     results = []
 
     for model_name in model_names:
         for role in roles:
-            result, args = query_deepseek(
+            result, args = query_gemini(
                 q=q,
                 role=role,
                 model_name=model_name,
@@ -123,16 +129,16 @@ def grid_query_deepseek(
     return results
 
 
-async def aquery_deepseek(
+async def aquery_gemini(
     q: str,
     role: str,
-    model_name: str,
+    model_name: AVAILABLE_MODELS,
     temperature: float,
     max_tokens: int | None = None,
 ) -> tuple[str, QueryArgs]:
-    """DeepSeek APIに単一の問い合わせを非同期で行う関数
+    """Gemini APIに単一の問い合わせを非同期で行う関数
 
-    query_deepseek関数の非同期版関数
+    query_gemini関数の非同期版関数
 
     Args:
         q: クエリ文字列
@@ -143,15 +149,15 @@ async def aquery_deepseek(
 
     Returns:
         tuple[str, Dict[str, Union[str, int, float, None]]]:
-          query_deepseek関数の戻り値
+          query_gemini関数の戻り値
     """
     if not HAS_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY 環境変数が設定されていません。")
+        raise ValueError("GOOGLE_API_KEY 環境変数が設定されていません。")
 
     loop = asyncio.get_event_loop()
     return await loop.run_in_executor(
         None,
-        query_deepseek,
+        query_gemini,
         q,
         role,
         model_name,
@@ -160,16 +166,16 @@ async def aquery_deepseek(
     )
 
 
-async def agrid_query_deepseek(
+async def agrid_query_gemini(
     q: str,
     roles: tuple[str, ...],
-    model_names: tuple[str, ...],
+    model_names: tuple[AVAILABLE_MODELS, ...],
     temperature: float,
     max_tokens: int | None = None,
 ) -> list[tuple[str, QueryArgs]]:
-    """DeepSeek APIに複数の問い合わせを非同期で実行する関数
+    """Gemini APIに複数の問い合わせを非同期で実行する関数
 
-    grid_query_deepseek関数の非同期版関数
+    grid_query_gemini関数の非同期版関数
 
     Args:
         q: クエリ文字列
@@ -180,15 +186,15 @@ async def agrid_query_deepseek(
 
     Returns:
         List[Tuple[str, Dict[str, Union[str, int, float, None]]]]:
-          query_deepseek関数の戻り値のリスト
+          query_gemini関数の戻り値のリスト
     """
     if not HAS_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY 環境変数が設定されていません。")
+        raise ValueError("GOOGLE_API_KEY 環境変数が設定されていません。")
     tasks = []
 
     for model_name in model_names:
         for role in roles:
-            task = aquery_deepseek(
+            task = aquery_gemini(
                 q=q,
                 role=role,
                 model_name=model_name,
