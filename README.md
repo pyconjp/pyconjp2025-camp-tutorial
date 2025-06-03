@@ -37,7 +37,7 @@ $ source venv/bin/python
 (venv) $ pip install -e ".[dev]"
 ```
 
-## Google AI Studio API の取得方法と設定
+## Google Gemini API の取得方法と設定
 
 - Google AI Studio の サイトへ https://ai.google.dev/aistudio?hl=ja
 - サイトに Google アカウントでログインする
