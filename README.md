@@ -3,7 +3,7 @@
 PyCon JP 2025 の合宿時に [FastAPI](https://fastapi.tiangolo.com/) のチュートリアルを実施する
 
 - FastAPI で、LLM への問い合わせをまとめて実行できる、API サーバを構築する
-- DeepSeek API を使って、まとめて AI から回答を得られる API サーバを作る
+- Gemini API を使って、まとめて AI から回答を得られる API サーバを作る
   - 10 件の別観点の質問を、AI に問い合わせ
   - まとめて回答が得られる
 
@@ -17,7 +17,7 @@ PyCon JP 2025 の合宿時に [FastAPI](https://fastapi.tiangolo.com/) のチュ
 ```bash
 $ uv init -p python3.13
 $ uv add "fastapi[all]"
-$ uv add "langchain[deepseek]"
+$ uv add "langchain[langchain-google-genai]"
 $ uv add --dev ruff pyright pytest pytest-asyncio httpx
 ```
 
@@ -37,18 +37,20 @@ $ source venv/bin/python
 (venv) $ pip install -e ".[dev]"
 ```
 
-## DeepSeek API の取得方法と設定
+## Google AI Studio API の取得方法と設定
 
-- DeepSeek サイトへ https://platform.deepseek.com/
-- `Start Now` をクリック
-- ログインアカウントを作る (Google 認証に対応)
-- 左側の API Keys から、「Create new API key」をクリックし名前を付けて作成
-- Key は一度だけ画面に表示されるので **漏らさない** ように個人で管理する
+- Google AI Studio の サイトへ https://ai.google.dev/aistudio?hl=ja
+- サイトに Google アカウントでログインする
+- Google AI Studio のログインを行う
+- Build with the Gemini API -> 「Get API key」をクリック
+- 規約同意する
+- 「API キーを作成」-> 「新しいプロジェクトで API キーを作成」
+- Key は画面に表示されるので **漏らさない** ように個人で管理する
 
 Mac/Linux
 
 ```
-% export DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxx
+% export GOOGLE_API_KEY=xxxxxxxxxxxxxx
 ```
 
 Windows
