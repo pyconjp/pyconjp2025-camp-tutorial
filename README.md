@@ -57,6 +57,10 @@ Windows
 
 TBD
 
+# チュートリアルの進め方
+
+[チュートリアル対象者のレベルごとの進め方](tutorial.md) ドキュメントを参照
+
 ## おまけ: VS Code セットアップ手順
 
 [Visual Studio Code](https://code.visualstudio.com) (以下 VS Code) を使う人向けのセットアップ手順(`git clone` 後)を記載します。  
@@ -115,8 +119,11 @@ venv の場合
     - `key`: 仮認証用・・公開した際に誤って大量のリクエストを受け付けないようにするための内部キー(認証としては仮のものと考えたほうがいいが)
     - `q`: 質問文字列
     - `options`:
-    - `model`: デフォルトで DeepSeek XXX
+    - `model`: デフォルトで `gemini-2.0-flush`
     - `max_tokens`: デフォルトで 1024
   - 個別 (multi の場合)
     - `models`: `list[model]` 複数のモデルをりようできるようにする
+      - "gemini-2.0-flash",
+      - "gemini-1.5-flash",
+      - "gemini-2.5-flash",
     - `prefixes`: `list[str]` 質問文の前にいれる文言 (例: `["初心者向けに答えて", "弁護士風に答えて"]`)
