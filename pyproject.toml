@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[all]>=0.115.12",
-    "langchain[deepseek]>=0.3.25",
+    "langchain-google-genai>=2.1.5",
 ]
 
 [project.optional-dependencies]
