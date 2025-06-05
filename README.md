@@ -55,7 +55,9 @@ Mac/Linux
 
 Windows
 
-TBD
+```
+> $Env:GOOGLE_API_KEY = "xxxxxxx"
+```
 
 # チュートリアルの進め方
 
