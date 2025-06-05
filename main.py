@@ -1,9 +1,19 @@
 import time
+from typing import List, Tuple
 
 from fastapi import FastAPI, HTTPException
 
-from models import AVAILABLE_MODELS, ApiResponse, QueryResponse, SingleRequest
-from searchapi import query_gemini
+from models import (
+    AVAILABLE_MODELS,
+    ApiResponse,
+    MultiQueryItem,
+    MultiQueryResponse,
+    MultiRequest,
+    QueryArgs,
+    QueryResponse,
+    SingleRequest,
+)
+from searchapi import grid_query_gemini, query_gemini
 
 app = FastAPI(
     title="PyCon JP 2025 Camp Tutorial API",
@@ -89,6 +99,76 @@ def single(data: SingleRequest):
         )
 
         return response
+
+
+@app.post("/multi", response_model=MultiQueryResponse)
+def multi(data: MultiRequest):
+    """
+    複数の問い合わせを行うエンドポイント
+
+    引数:
+    - request: MultiRequestモデルのリクエスト
+      - key: 認証キー
+      - q: 質問文字列
+      - options: オプション設定
+        - models: モデル名のリスト（デフォルト: [gemini-2.0-flash]）
+        - roles: 役割のリスト（デフォルト: ["あなたは親切なアシスタントです。"]）
+        - max_tokens: 最大トークン数（デフォルト: 1024）
+
+    戻り値:
+    - MultiQueryResponse: 複数の応答を含むAPI応答
+      - data: MultiQueryItemのリスト
+        - id: 回答のID（1から始まるインデックス）
+        - result: 回答文字列
+        - args: QueryArgs型の辞書
+      - meta:
+        - duration: 処理時間（秒）
+    """
+    # 認証キーの確認
+    if data.key != AUTH_KEY:
+        raise HTTPException(status_code=401, detail="認証キーが無効です")
+
+    start_time = time.time()
+
+    try:
+        # Gemini APIに複数の問い合わせ
+        model_names = tuple(data.options.models)
+        roles = tuple(data.options.roles)
+        max_tokens = data.options.max_tokens
+
+        # grid_query_geminiを呼び出して、複数の組み合わせで問い合わせる
+        results = grid_query_gemini(
+            q=data.q,
+            roles=roles,
+            model_names=model_names,
+            temperature=0.7,
+            max_tokens=max_tokens,
+        )
+
+        # 回答をMultiQueryItemに変換
+        multi_query_items = []
+        for idx, (result, args) in enumerate(results, 1):
+            multi_query_items.append(
+                MultiQueryItem(
+                    id=idx,
+                    result=result,
+                    args=args,
+                )
+            )
+
+        end_time = time.time()
+        duration = end_time - start_time
+
+        # 応答を作成
+        response = MultiQueryResponse(
+            data=multi_query_items,
+            meta={"duration": duration},
+        )
+
+        return response
+    except ValueError as e:
+        # Gemini APIの環境変数が設定されていない場合など
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def main():
