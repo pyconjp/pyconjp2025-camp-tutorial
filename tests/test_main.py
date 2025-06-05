@@ -114,7 +114,7 @@ def test_multi_endpoint(monkeypatch):
             {
                 "query": "テスト質問",
                 "role": "弁護士風に答えて",
-                "model_name": "gemini-2.5-flash",
+                "model_name": "gemini-2.5-flash-preview-05-20",
                 "temperature": 0.7,
                 "max_tokens": 1024,
             },
@@ -134,7 +134,7 @@ def test_multi_endpoint(monkeypatch):
             "key": AUTH_KEY,
             "q": "テスト質問",
             "options": {
-                "models": ["gemini-2.0-flash", "gemini-2.5-flash"],
+                "models": ["gemini-2.0-flash", "gemini-2.5-flash-preview-05-20"],
                 "roles": ["初心者向けに答えて", "弁護士風に答えて"],
                 "max_tokens": 1024,
             },

@@ -9,7 +9,7 @@ class AVAILABLE_MODELS(str, enum.Enum):
 
     GEMINI_2_0_FLASH = "gemini-2.0-flash"
     GEMINI_1_5_FLASH = "gemini-1.5-flash"
-    GEMINI_2_5_FLASH = "gemini-2.5-flash"
+    GEMINI_2_5_FLASH = "gemini-2.5-flash-preview-05-20"
 
 
 class QueryArgs(TypedDict):
