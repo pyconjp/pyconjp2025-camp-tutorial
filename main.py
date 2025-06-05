@@ -1,5 +1,4 @@
 import time
-from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -21,7 +20,7 @@ class SingleRequest(BaseModel):
 
     key: str
     q: str
-    options: dict[str, Any] | None = None
+    options: dict | None = None
 
 
 @app.get("/")
