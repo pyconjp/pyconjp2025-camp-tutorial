@@ -1,5 +1,5 @@
 import enum
-from typing import Any, List, TypedDict
+from typing import Any, TypedDict
 
 from pydantic import BaseModel, Field
 
@@ -52,13 +52,13 @@ class SingleRequest(BaseModel):
 class MultiOptions(BaseModel):
     """複数問い合わせのオプション設定"""
 
-    models: List[AVAILABLE_MODELS] = Field(
-        [AVAILABLE_MODELS.GEMINI_2_0_FLASH],
+    models: tuple[AVAILABLE_MODELS, ...] = Field(
+        (AVAILABLE_MODELS.GEMINI_2_0_FLASH,),
         title="モデル名リスト",
         description="使用するモデルの名前のリスト",
     )
-    roles: List[str] = Field(
-        ["あなたは親切なアシスタントです。"],
+    roles: tuple[str, ...] = Field(
+        ("あなたは親切なアシスタントです。",),
         title="役割リスト",
         description="AIの役割を指定する文字列のリスト（例：初心者向け、弁護士風など）",
     )
@@ -78,8 +78,8 @@ class MultiRequest(BaseModel):
     q: str = Field(..., description="質問文字列")
     options: MultiOptions = Field(
         default_factory=lambda: MultiOptions(
-            models=[AVAILABLE_MODELS.GEMINI_2_0_FLASH],
-            roles=["あなたは親切なアシスタントです。"],
+            models=(AVAILABLE_MODELS.GEMINI_2_0_FLASH,),
+            roles=("あなたは親切なアシスタントです。",),
             max_tokens=1024,
         ),
         title="オプション設定",
@@ -105,7 +105,7 @@ class MultiQueryItem(BaseModel):
 class MultiQueryResponse(BaseModel):
     """複数問い合わせの応答"""
 
-    data: List[MultiQueryItem]
+    data: list[MultiQueryItem]
     meta: dict[str, Any]
 
 

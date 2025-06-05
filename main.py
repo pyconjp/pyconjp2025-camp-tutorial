@@ -1,5 +1,4 @@
 import time
-from typing import List, Tuple
 
 from fastapi import FastAPI, HTTPException
 
@@ -9,7 +8,6 @@ from models import (
     MultiQueryItem,
     MultiQueryResponse,
     MultiRequest,
-    QueryArgs,
     QueryResponse,
     SingleRequest,
 )
@@ -130,12 +128,11 @@ def multi(data: MultiRequest):
 
     start_time = time.time()
 
-    try:
-        # Gemini APIに複数の問い合わせ
-        model_names = tuple(data.options.models)
-        roles = tuple(data.options.roles)
-        max_tokens = data.options.max_tokens
+    model_names = tuple(data.options.models)
+    roles = tuple(data.options.roles)
+    max_tokens = data.options.max_tokens
 
+    try:
         # grid_query_geminiを呼び出して、複数の組み合わせで問い合わせる
         results = grid_query_gemini(
             q=data.q,
@@ -144,7 +141,10 @@ def multi(data: MultiRequest):
             temperature=0.7,
             max_tokens=max_tokens,
         )
-
+    except ValueError as e:
+        # Gemini APIの環境変数が設定されていない場合など
+        raise HTTPException(status_code=500, detail=str(e))
+    else:
         # 回答をMultiQueryItemに変換
         multi_query_items = []
         for idx, (result, args) in enumerate(results, 1):
@@ -155,7 +155,6 @@ def multi(data: MultiRequest):
                     args=args,
                 )
             )
-
         end_time = time.time()
         duration = end_time - start_time
 
@@ -164,11 +163,7 @@ def multi(data: MultiRequest):
             data=multi_query_items,
             meta={"duration": duration},
         )
-
         return response
-    except ValueError as e:
-        # Gemini APIの環境変数が設定されていない場合など
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 def main():
