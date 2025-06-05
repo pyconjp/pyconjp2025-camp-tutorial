@@ -7,6 +7,7 @@ from unittest import mock
 
 import pytest
 
+from models import AVAILABLE_MODELS
 from searchapi import (
     agrid_query_gemini,
     aquery_gemini,
@@ -64,7 +65,7 @@ def test_query_gemini(mock_env, mock_chat_gemini):
     result, args = query_gemini(
         q="テストクエリ",
         role="テストロール",
-        model_name="gemini-2.0-flash",
+        model_name=AVAILABLE_MODELS.GEMINI_2_0_FLASH,
         temperature=0.7,
         max_tokens=100,
     )
@@ -82,7 +83,10 @@ def test_query_gemini(mock_env, mock_chat_gemini):
 def test_grid_query_gemini(mock_env, mock_chat_gemini):
     """grid_query_deepseek 関数のテスト"""
     roles = ("テストロール1", "テストロール2")
-    model_names = ("gemini-2.0-flash", "gemini-2.5-flash")
+    model_names = (
+        AVAILABLE_MODELS.GEMINI_2_0_FLASH,
+        AVAILABLE_MODELS.GEMINI_2_5_FLASH,
+    )
     results = grid_query_gemini(
         q="テストクエリ",
         roles=roles,
@@ -110,7 +114,7 @@ async def test_aquery_gemini(mock_env, mock_chat_gemini):
     result, args = await aquery_gemini(
         q="テストクエリ",
         role="テストロール",
-        model_name="gemini-2.0-flash",
+        model_name=AVAILABLE_MODELS.GEMINI_2_0_FLASH,
         temperature=0.7,
         max_tokens=100,
     )
@@ -129,7 +133,10 @@ async def test_aquery_gemini(mock_env, mock_chat_gemini):
 async def test_agrid_query_gemini(mock_env, mock_chat_gemini):
     """agrid_query_deepseek 関数のテスト"""
     roles = ("テストロール1", "テストロール2")
-    model_names = ("gemini-2.0-flash", "gemini-2.5-flash")
+    model_names = (
+        AVAILABLE_MODELS.GEMINI_2_0_FLASH,
+        AVAILABLE_MODELS.GEMINI_2_5_FLASH,
+    )
     results = await agrid_query_gemini(
         q="テストクエリ",
         roles=roles,
@@ -163,6 +170,6 @@ def test_no_api_key():
             searchapi.query_gemini(
                 q="テスト",
                 role="テストロール",
-                model_name="gemini-2.0-flash",
+                model_name=AVAILABLE_MODELS.GEMINI_1_5_FLASH,
                 temperature=0.7,
             )

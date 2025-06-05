@@ -10,20 +10,15 @@ Gemini APIに対して問い合わせを行うモジュール
 import asyncio
 import logging
 import os
-from typing import Literal, TypedDict
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+from models import AVAILABLE_MODELS, QueryArgs
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-AVAILABLE_MODELS = Literal[
-    "gemini-2.0-flash",
-    "gemini-1.5-flash",
-    "gemini-2.5-flash",
-]
 
 if os.getenv("GOOGLE_API_KEY") is None:
     HAS_API_KEY = False
@@ -33,16 +28,6 @@ if os.getenv("GOOGLE_API_KEY") is None:
     )
 else:
     HAS_API_KEY = True
-
-
-class QueryArgs(TypedDict):
-    """DeepSeek APIの戻り値を表す型"""
-
-    query: str
-    role: str
-    model_name: AVAILABLE_MODELS
-    temperature: float
-    max_tokens: int | None
 
 
 def query_gemini(

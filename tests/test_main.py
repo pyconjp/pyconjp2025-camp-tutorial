@@ -5,6 +5,7 @@ main モジュールのテスト
 from fastapi.testclient import TestClient
 
 from main import AUTH_KEY, app
+from models import AVAILABLE_MODELS
 from searchapi import QueryArgs
 
 client = TestClient(app)
@@ -37,7 +38,7 @@ def test_single_endpoint(monkeypatch):
     mock_args = QueryArgs(
         query="テスト質問",
         role="あなたは親切なアシスタントです。",
-        model_name="gemini-2.0-flash",
+        model_name=AVAILABLE_MODELS.GEMINI_2_0_FLASH,
         temperature=0.7,
         max_tokens=1024,
     )
