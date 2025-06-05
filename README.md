@@ -91,13 +91,13 @@ Windows
 uv を使用する場合：
 
 ```
-uv run python main.py
+uv run uvicorn main:app --reload
 ```
 
 venv を使用する場合：
 
 ```
-(venv) python main.py
+(venv) % uvicorn main:app --reload
 ```
 
 サーバーが起動したら、ブラウザで http://127.0.0.1:8000 にアクセスできます。
