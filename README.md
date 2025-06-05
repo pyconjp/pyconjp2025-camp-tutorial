@@ -140,5 +140,5 @@ venv の場合
     - `models`: `list[model]` 複数のモデルを利用できるようにする
       - "gemini-2.0-flash",
       - "gemini-1.5-flash",
-      - "gemini-2.5-flash",
+      - "gemini-2.5-flash-preview-05-20",
     - `prefixes`: `list[str]` 質問文の前にいれる文言 (例: `["初心者向けに答えて", "弁護士風に答えて"]`)
