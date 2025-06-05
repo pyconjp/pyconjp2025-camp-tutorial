@@ -1,10 +1,9 @@
 import time
-from typing import Any
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
 
-from searchapi import AVAILABLE_MODELS, QueryArgs, query_gemini
+from models import AVAILABLE_MODELS, ApiResponse, QueryResponse, SingleRequest
+from searchapi import query_gemini
 
 app = FastAPI(
     title="PyCon JP 2025 Camp Tutorial API",
@@ -14,35 +13,6 @@ app = FastAPI(
 
 # 仮の認証キー（実際の運用では環境変数などから取得すべき）
 AUTH_KEY = "pyconjp2025"
-
-
-class Options(BaseModel):
-    """LLMへのオプション設定"""
-
-    model: AVAILABLE_MODELS = "gemini-2.0-flash"
-    max_tokens: int = 1024
-
-
-class SingleRequest(BaseModel):
-    """単一の問い合わせリクエスト"""
-
-    key: str = Field(..., description="認証キー")
-    q: str = Field(..., description="質問文字列")
-    options: Options | None = Field(default_factory=Options)
-
-
-class QueryResponse(BaseModel):
-    """問い合わせの応答"""
-
-    result: str
-    args: QueryArgs
-
-
-class ApiResponse(BaseModel):
-    """API応答の基本形式"""
-
-    data: QueryResponse
-    meta: dict[str, Any]
 
 
 @app.get("/")
@@ -88,7 +58,7 @@ def single(request: SingleRequest):
 
     options = request.options
     if options is None:
-        model_name = "gemini-2.0-flash"
+        model_name = AVAILABLE_MODELS.GEMINI_2_0_FLASH
         max_tokens = 1024
     else:
         model_name = options.model
