@@ -17,8 +17,8 @@ PyCon JP 2025 の合宿時に [FastAPI](https://fastapi.tiangolo.com/) のチュ
 ```bash
 $ uv init -p python3.13
 $ uv add "fastapi[all]"
-$ uv add "langchain[langchain-google-genai]"
-$ uv add --dev ruff pyright pytest pytest-asyncio httpx
+$ uv add "langchain-google-genai"
+$ uv add --optional dev ruff pyright pytest pytest-asyncio httpx
 ```
 
 ## 利用者向け構築
