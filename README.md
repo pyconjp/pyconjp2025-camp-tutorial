@@ -65,7 +65,7 @@ Windows
 
 ## おまけ: VS Code セットアップ手順
 
-[Visual Studio Code](https://code.visualstudio.com) (以下 VS Code) を使う人向けのセットアップ手順(`git clone` 後)を記載します。
+[Visual Studio Code](https://code.visualstudio.com) (以下 VS Code) を使う人向けのセットアップ手順(`git clone` 後)を記載します。  
 既に VS Code で Python 環境を設定済み、または他のエディタを使用している人はスキップして問題ありません。
 
 1. 任意: VS Code で[新規プロファイル](https://code.visualstudio.com/docs/configure/profiles)を作成
