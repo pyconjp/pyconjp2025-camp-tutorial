@@ -17,8 +17,8 @@ PyCon JP 2025 の合宿時に [FastAPI](https://fastapi.tiangolo.com/) のチュ
 ```bash
 $ uv init -p python3.13
 $ uv add "fastapi[all]"
-$ uv add "langchain[langchain-google-genai]"
-$ uv add --dev ruff pyright pytest pytest-asyncio httpx
+$ uv add "langchain-google-genai"
+$ uv add --optional dev ruff pyright pytest pytest-asyncio httpx
 ```
 
 ## 利用者向け構築
@@ -140,5 +140,5 @@ venv の場合
     - `models`: `list[model]` 複数のモデルを利用できるようにする
       - "gemini-2.0-flash",
       - "gemini-1.5-flash",
-      - "gemini-2.5-flash",
+      - "gemini-2.5-flash-preview-05-20",
     - `prefixes`: `list[str]` 質問文の前にいれる文言 (例: `["初心者向けに答えて", "弁護士風に答えて"]`)
