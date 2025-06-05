@@ -17,8 +17,8 @@ PyCon JP 2025 の合宿時に [FastAPI](https://fastapi.tiangolo.com/) のチュ
 ```bash
 $ uv init -p python3.13
 $ uv add "fastapi[all]"
-$ uv add "langchain[langchain-google-genai]"
-$ uv add --dev ruff pyright pytest pytest-asyncio httpx
+$ uv add "langchain-google-genai"
+$ uv add --optional dev ruff pyright pytest pytest-asyncio httpx
 ```
 
 ## 利用者向け構築
@@ -43,7 +43,7 @@ $ source venv/bin/python
 - サイトに Google アカウントでログインする
 - Google AI Studio のログインを行う
 - Build with the Gemini API -> 「Get API key」をクリック
-- 規約同意する
+- 規約に同意する
 - 「API キーを作成」-> 「新しいプロジェクトで API キーを作成」
 - Key は画面に表示されるので **漏らさない** ように個人で管理する
 
@@ -55,7 +55,13 @@ Mac/Linux
 
 Windows
 
-TBD
+```
+> $Env:GOOGLE_API_KEY = "xxxxxxx"
+```
+
+# チュートリアルの進め方
+
+[チュートリアル対象者のレベルごとの進め方](tutorial.md) ドキュメントを参照
 
 ## おまけ: VS Code セットアップ手順
 
@@ -65,7 +71,7 @@ TBD
 1. 任意: VS Code で[新規プロファイル](https://code.visualstudio.com/docs/configure/profiles)を作成
    1. 他の言語などで VS Code を開発に使用している場合は新規プロファイルを推奨
 1. メニューから「フォルダを開く (Open Folder)」を選択し、クローンしたリポジトリを選択
-1. 右下に以下メッセージのような「おすすめ拡張機能をインストールするか」のポップアップ ダイアログが出るので「インストール」を押下
+1. 右下に以下のような「おすすめ拡張機能をインストールするか」のポップアップ ダイアログが出るので「インストール」を押下
    1. または左端のアクティビティ バーにある拡張機能のアイコンをクリックし、検索窓に `@recommended` と入力して表示される拡張機能をインストールする
    1. メッセージ(日): このリポジトリ 用のおすすめ拡張機能 Microsoft、tamasfe、その他からの拡張機能 をインストールしますか?
    1. メッセージ(英): Do you want to install the recommended extensions from Microsoft, tamasfe and others for this repository?
@@ -82,7 +88,20 @@ TBD
 
 ### 起動
 
-TBD
+uv を使用する場合：
+
+```
+uv run python main.py
+```
+
+venv を使用する場合：
+
+```
+(venv) python main.py
+```
+
+サーバーが起動したら、ブラウザで http://127.0.0.1:8000 にアクセスできます。
+また、API ドキュメントは http://127.0.0.1:8000/docs または http://127.0.0.1:8000/redoc で閲覧できます。
 
 ### テスト実行
 
@@ -115,8 +134,11 @@ venv の場合
     - `key`: 仮認証用・・公開した際に誤って大量のリクエストを受け付けないようにするための内部キー(認証としては仮のものと考えたほうがいいが)
     - `q`: 質問文字列
     - `options`:
-    - `model`: デフォルトで DeepSeek XXX
+    - `model`: デフォルトで `gemini-2.0-flush`
     - `max_tokens`: デフォルトで 1024
   - 個別 (multi の場合)
-    - `models`: `list[model]` 複数のモデルをりようできるようにする
+    - `models`: `list[model]` 複数のモデルを利用できるようにする
+      - "gemini-2.0-flash",
+      - "gemini-1.5-flash",
+      - "gemini-2.5-flash-preview-05-20",
     - `prefixes`: `list[str]` 質問文の前にいれる文言 (例: `["初心者向けに答えて", "弁護士風に答えて"]`)
