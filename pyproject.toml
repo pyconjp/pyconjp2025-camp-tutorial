@@ -16,6 +16,15 @@ dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
+    "types-requests>=2.32.0.20250602",
+]
+client = [
+    "requests>=2.32.3",
+    "streamlit>=1.45.1",
+]
+all = [
+    "pyconjp2025-camp-tutorial[dev]",
+    "pyconjp2025-camp-tutorial[client]",
 ]
 
 [tool.ruff]
