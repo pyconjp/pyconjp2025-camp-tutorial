@@ -11,7 +11,7 @@ models = st.multiselect(
     "models",
     options=["gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.5-flash-preview-05-20"],
 )
-roles = st.text_area("roles").split()
+roles = st.text_area("roles (1行で1ロール)").split()
 
 data = {
     "key": "pyconjp2025",
