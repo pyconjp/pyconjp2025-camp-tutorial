@@ -26,15 +26,28 @@ $ uv add --optional dev ruff pyright pytest pytest-asyncio httpx
 uv を使用する場合
 
 ```bash
+# 基本インストール
+$ uv sync
+
+# 開発環境用のインストール
 $ uv sync --extra 'dev'
+
+# クライアント機能(Streamlit)を含めたインストール
+$ uv sync --extra 'client'
+
+# すべての機能（開発環境とクライアント機能）を含めたインストール
+$ uv sync --extra 'all'
 ```
 
 venv を利用する場合
 
 ```bash
 $ python -m venv venv
-$ source venv/bin/python
-(venv) $ pip install -e ".[dev]"
+$ source venv/bin/activate
+(venv) $ pip install -e "."          # 基本インストール
+(venv) $ pip install -e ".[dev]"     # 開発環境
+(venv) $ pip install -e ".[client]"  # クライアント機能(Streamlit)
+(venv) $ pip install -e ".[all]"     # すべての機能（開発環境とクライアント機能）
 ```
 
 ## Google Gemini API の取得方法と設定
@@ -142,3 +155,29 @@ venv の場合
       - "gemini-1.5-flash",
       - "gemini-2.5-flash-preview-05-20",
     - `prefixes`: `list[str]` 質問文の前にいれる文言 (例: `["初心者向けに答えて", "弁護士風に答えて"]`)
+
+# クライアントアプリ
+
+Streamlitのクライアントアプリを付属
+
+FastAPIがローカルで立ち上がっていることを前提に機能するもので、 `/multi-async` エンドポイントが有効な状態であること。
+
+## インストール方法
+
+利用者向け構築の `[client]` を利用する
+
+## 起動方法
+
+uvの場合
+
+```bash
+uv run streamlit run client.py
+```
+
+venvの場合
+
+```bash
+(venv) $ streamlit run client.py
+```
+
+デフォルトのブラウザが立ち上がり質問を複数の回答が得られる
