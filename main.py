@@ -1,6 +1,5 @@
-import time
-
 from fastapi import FastAPI, HTTPException
+import time
 
 from models import (
     AVAILABLE_MODELS,
